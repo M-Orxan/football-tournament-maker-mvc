@@ -1,4 +1,7 @@
 using football_tournament_maker_mvc.Data;
+using football_tournament_maker_mvc.Models;
+using football_tournament_maker_mvc.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +13,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-var app = builder.Build();
 
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+var app = builder.Build();
+DataSeedingAsync();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -32,3 +41,11 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+async Task DataSeedingAsync()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitialize = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        await dbInitialize.InitializeAsync();
+    }
+}
