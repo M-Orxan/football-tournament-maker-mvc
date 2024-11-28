@@ -1,5 +1,6 @@
 using football_tournament_maker_mvc.Data;
 using football_tournament_maker_mvc.Models;
+using football_tournament_maker_mvc.Repositories;
 using football_tournament_maker_mvc.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
 var app = builder.Build();
 DataSeedingAsync();
 // Configure the HTTP request pipeline.

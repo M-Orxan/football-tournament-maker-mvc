@@ -1,0 +1,36 @@
+﻿@using football_tournament_maker_mvc.ViewModels
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model List<TeamVM>
+@{
+    int count = 1;
+}
+
+<h1>Teams</h1>
+<a class="btn btn-primary"  asp-action="Create" > Add new team</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+           
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var team in  Model)
+        {
+            <tr>
+                <th scope="row">@count</th>
+                <td>@team.Name</td>
+                <td>Show stats</td>
+                <td>Delete</td>
+            </tr>
+            count++;
+        }
+    </tbody>
+</table>
