@@ -3,11 +3,12 @@ using football_tournament_maker_mvc.Models;
 
 namespace football_tournament_maker_mvc.ViewModels
 {
-    public class TournamentVM
+    public class CreateTournamentVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<TeamTournament> TeamTournaments { get; set; }
+
         public TournamentFormat TournamentFormat { get; set; }
+
     }
 }

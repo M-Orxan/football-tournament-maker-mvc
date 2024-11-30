@@ -1,0 +1,45 @@
+﻿@using football_tournament_maker_mvc.Enums
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+@model CreateTournamentVM
+<h1>Add new tournament</h1>
+
+<form method="post" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="TournamentFormat" >Choose tournament format</label>
+        <select  class="form-select" name="format" asp-items="@Html.GetEnumSelectList<TournamentFormat>()">
+
+        </select>
+        <span asp-validation-for="TournamentFormat" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label >Choose the teams by pressing CTRL</label>
+        <select multiple class="form-select" name="teamIds[]" >
+            
+            @foreach (Team team in ViewBag.Teams)
+            {
+                <option value="@team.Id" >@team.Name</option>
+            }
+        </select>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+
+    <button style="margin-top:5px" type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+

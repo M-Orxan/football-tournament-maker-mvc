@@ -12,20 +12,38 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Teams</th>
+                <th scope="col">Format</th>
 
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
 
-            @foreach (var tournament in Model)
+            @foreach (TournamentVM tournament in Model)
             {
                 <tr>
                     <th scope="row">@count</th>
                     <td>@tournament.Name</td>
                     <td>
-                        <a asp-action="Detail" class="text-info">Show stats</a>
-                        <a asp-action="Delete" class="text-danger">Delete</a>
+                    
+                        @foreach (TeamTournament teamTournament in tournament.TeamTournaments)
+                        {
+                            <div>@teamTournament.Team.Name</div>
+
+                        }
+                    </td>
+
+                    <td>
+
+                        @tournament.TournamentFormat
+                    </td>
+                    <td>
+                        <a asp-action="GenerateTable" class="btn btn-primary">Table</a>
+                        <a asp-action="GenerateMatches" class="btn btn-primary">Matches</a>
+                        <form asp-action="Delete" asp-route-id="@tournament.Id" method="post" onsubmit="return confirm('Do you want to delete?');">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
 
                     </td>
 

@@ -11,14 +11,17 @@ namespace football_tournament_maker_mvc.Repositories
         {
             _context = context;
         }
-        public Task AddAsync(Tournament entity)
+        public async Task AddAsync(Tournament entity)
         {
-            throw new NotImplementedException();
+            await _context.Tournaments.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            _context.Remove(await _context.Tournaments.FirstOrDefaultAsync(x=>x.Id==id));
+
+            await _context.SaveChangesAsync();
         }
 
         public Task<bool> ExistsByNameAsync(string name)
@@ -28,7 +31,7 @@ namespace football_tournament_maker_mvc.Repositories
 
         public async Task<IEnumerable<Tournament>> GetAllAsync()
         {
-            return await _context.Tournaments.ToListAsync();
+            return await _context.Tournaments.Include(x=>x.TeamTournaments).ThenInclude(x=>x.Team).ToListAsync();
         }
 
         public Task<Tournament> GetByIdAsync(int id)
