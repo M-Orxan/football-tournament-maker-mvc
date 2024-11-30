@@ -6,6 +6,6 @@
 
         public string Name { get; set; }
 
-        public List<Team> Teams { get; set; }
+        public List<TeamTournament> TeamTournaments { get; set; }
     }
 }

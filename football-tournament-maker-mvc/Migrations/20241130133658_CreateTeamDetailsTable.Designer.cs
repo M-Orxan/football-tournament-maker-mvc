@@ -12,8 +12,8 @@ using football_tournament_maker_mvc.Data;
 namespace football_tournament_maker_mvc.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241127185330_Init")]
-    partial class Init
+    [Migration("20241130133658_CreateTeamDetailsTable")]
+    partial class CreateTeamDetailsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,130 @@ namespace football_tournament_maker_mvc.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Drawn")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalDifference")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsAgainst")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsFor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Lost")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayedGames")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Won")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.TeamDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalDrawn")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalGoalDifference")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalGoalsAgainst")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalGoalsFor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalLost")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalPlayedGames")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalPoints")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalWon")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId")
+                        .IsUnique();
+
+                    b.ToTable("TeamDetails");
+                });
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.TeamTournament", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.ToTable("TeamTournaments");
+                });
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.Tournament", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tournaments");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -243,6 +367,36 @@ namespace football_tournament_maker_mvc.Migrations
                     b.HasDiscriminator().HasValue("AppUser");
                 });
 
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.TeamDetail", b =>
+                {
+                    b.HasOne("football_tournament_maker_mvc.Models.Team", "Team")
+                        .WithOne("TeamDetail")
+                        .HasForeignKey("football_tournament_maker_mvc.Models.TeamDetail", "TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.TeamTournament", b =>
+                {
+                    b.HasOne("football_tournament_maker_mvc.Models.Team", "Team")
+                        .WithMany("TeamTournaments")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("football_tournament_maker_mvc.Models.Tournament", "Tournament")
+                        .WithMany("TeamTournaments")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("Tournament");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -292,6 +446,19 @@ namespace football_tournament_maker_mvc.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.Team", b =>
+                {
+                    b.Navigation("TeamDetail")
+                        .IsRequired();
+
+                    b.Navigation("TeamTournaments");
+                });
+
+            modelBuilder.Entity("football_tournament_maker_mvc.Models.Tournament", b =>
+                {
+                    b.Navigation("TeamTournaments");
                 });
 #pragma warning restore 612, 618
         }

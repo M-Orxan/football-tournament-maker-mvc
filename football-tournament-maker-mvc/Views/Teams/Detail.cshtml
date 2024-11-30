@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Detail";
+
+}
+
+@model TeamDetailVM
+<div class="text-center">
+    <h1>@Model.Name</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th scope="col">Total Games Played</th>
+                <th scope="col">Total Won Games</th>
+                <th scope="col">Total Drawn Games</th>
+                <th scope="col">Total Lost Games</th>
+                <th scope="col">Total Goals For</th>
+                <th scope="col">Total Goals Against</th>
+                <th scope="col">Total Goal Difference</th>
+             
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    @Model.TotalPlayedGames
+                </td>
+                <td>
+                    @Model.TotalWon
+                </td>
+                <td>
+                    @Model.TotalDrawn
+                </td>
+                <td>
+                    @Model.TotalLost
+                </td>
+                <td>
+                    @Model.TotalGoalsFor
+                </td>
+                <td>
+                    @Model.TotalGoalsAgainst
+                </td>
+                <td>
+                    @Model.TotalGoalDifference
+                </td>
+
+            </tr>
+
+
+        </tbody>
+    </table>
+</div>

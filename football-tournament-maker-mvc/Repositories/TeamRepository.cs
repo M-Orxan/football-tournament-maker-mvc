@@ -17,18 +17,19 @@ namespace football_tournament_maker_mvc.Repositories
 
         public async Task AddAsync(Team team)
         {
-            var exists = await _context.Teams.AnyAsync(t => t.Name == team.Name);
-            if (exists)
-            {
 
-            }
             await _context.Teams.AddAsync(team);
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var team = await _context.Teams.FirstOrDefaultAsync(x => x.Id == id);
+            if (team != null)
+                _context.Teams.Remove(team);
+           
+            
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Team>> GetAllAsync()
@@ -37,9 +38,9 @@ namespace football_tournament_maker_mvc.Repositories
 
         }
 
-        public Task<Team> GetByIdAsync(int id)
+        public async Task<Team> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _context.Teams.Include(x=>x.TeamDetail).FirstOrDefaultAsync(x=>x.Id==id);
         }
 
         public async Task<bool> ExistsByNameAsync(string name)

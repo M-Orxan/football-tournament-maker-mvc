@@ -21,10 +21,11 @@ namespace football_tournament_maker_mvc.Controllers
         }
 
         public async Task<IActionResult> Index()
-        { 
+        {
             var teams = await _repository.GetAllAsync();
             var vm = teams.Select(t => new TeamVM
             {
+                Id = t.Id,
                 Name = t.Name
             }).ToList();
             return View(vm);
@@ -51,16 +52,61 @@ namespace football_tournament_maker_mvc.Controllers
                 return View(vm);
             }
 
-            var team=new Team()
+            var team = new Team()
             {
-                Name = vm.Name
+                Name = vm.Name,
+               
+            };
+            team.TeamDetail = new TeamDetail()
+            {
+                TeamId = team.Id,
+               
             };
 
-            
 
-           await _repository.AddAsync(team);
+            await _repository.AddAsync(team);
 
             return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!ModelState.IsValid) { return View(); }
+
+            await _repository.DeleteAsync(id);
+
+            return RedirectToAction("Index");
+
+        }
+
+
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            if (!ModelState.IsValid) { return View(); }
+            var team = await _repository.GetByIdAsync(id);
+
+            var vm = new TeamDetailVM()
+            {
+                Id = team.Id,
+                Name = team.Name,
+                TotalPlayedGames = team.TeamDetail.TotalPlayedGames,
+                TotalDrawn = team.TeamDetail.TotalDrawn,
+                TotalGoalDifference = team.TeamDetail.TotalGoalDifference,
+                TotalGoalsAgainst = team.TeamDetail.TotalGoalsAgainst,
+                TotalGoalsFor = team.TeamDetail.TotalGoalsFor,
+                TotalLost = team.TeamDetail.TotalLost,
+                TotalPoints = team.TeamDetail.TotalPoints,
+                TotalWon = team.TeamDetail.TotalWon,
+            };
+
+
+
+            return View(vm);
+
         }
     }
 }

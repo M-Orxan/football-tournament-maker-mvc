@@ -21,6 +21,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
+builder.Services.AddScoped<IRepository<Tournament>, TournamentRepository>();
 var app = builder.Build();
 DataSeedingAsync();
 // Configure the HTTP request pipeline.
