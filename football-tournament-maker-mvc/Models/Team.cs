@@ -19,5 +19,7 @@ namespace football_tournament_maker_mvc.Models
 
         public List<TeamTournament> TeamTournaments { get; set; }
         public TeamDetail TeamDetail { get; set; }
+
+       
     }
 }

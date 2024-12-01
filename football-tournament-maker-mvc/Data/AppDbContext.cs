@@ -17,5 +17,6 @@ namespace football_tournament_maker_mvc.Data
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<TeamTournament> TeamTournaments { get; set; }
         public DbSet<TeamDetail> TeamDetails { get; set; }
+        public DbSet<Match> Matches { get; set; }
     }
 }

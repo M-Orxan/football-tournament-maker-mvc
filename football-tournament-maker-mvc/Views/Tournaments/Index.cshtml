@@ -20,14 +20,14 @@
         </thead>
         <tbody>
 
-            @foreach (TournamentVM tournament in Model)
+            @foreach (TournamentVM tournamentVM in Model)
             {
                 <tr>
                     <th scope="row">@count</th>
-                    <td>@tournament.Name</td>
+                    <td>@tournamentVM.Name</td>
                     <td>
-                    
-                        @foreach (TeamTournament teamTournament in tournament.TeamTournaments)
+
+                        @foreach (TeamTournament teamTournament in tournamentVM.TeamTournaments)
                         {
                             <div>@teamTournament.Team.Name</div>
 
@@ -36,12 +36,12 @@
 
                     <td>
 
-                        @tournament.TournamentFormat
+                        @tournamentVM.TournamentFormat
                     </td>
                     <td>
-                        <a asp-action="GenerateTable" class="btn btn-primary">Table</a>
-                        <a asp-action="GenerateMatches" class="btn btn-primary">Matches</a>
-                        <form asp-action="Delete" asp-route-id="@tournament.Id" method="post" onsubmit="return confirm('Do you want to delete?');">
+                        <a asp-action="GenerateTable" asp-route-id="@tournamentVM.Id" class="btn btn-primary">Table</a>
+                        <a asp-action="GenerateMatches" asp-route-id="@tournamentVM.Id" class="btn btn-primary">Matches</a>
+                        <form asp-action="Delete" asp-route-id="@tournamentVM.Id" method="post" onsubmit="return confirm('Do you want to delete?');">
                             <button class="btn btn-danger">Delete</button>
                         </form>
 

@@ -81,9 +81,61 @@ namespace football_tournament_maker_mvc.Controllers
 
 
 
-        public IActionResult GenerateMatches(int id)
+        public async Task<IActionResult> GenerateMatches(int id)
         {
-            return View();
+            Tournament tournament = await _repository.GetByIdAsync(id);
+
+            if (tournament.TournamentFormat == Enums.TournamentFormat.SingleRoundRobin)
+            {
+                if (tournament.TeamTournaments.Count % 2 == 0)
+                    ViewBag.RoundsCount = tournament.TeamTournaments.Count - 1;
+                else
+                    ViewBag.RoundsCount = tournament.TeamTournaments.Count;
+            }
+
+            int roundsCount;
+       
+            
+            if (tournament.TeamTournaments.Count % 2 == 0)
+                roundsCount = tournament.TeamTournaments.Count - 1;
+            else
+                roundsCount = tournament.TeamTournaments.Count;
+
+
+            List<MatchVM> matchesVM = new List<MatchVM>();
+
+            for (int i = 0; i < roundsCount; i++)
+            {
+                for (int j = 0; j < tournament.TeamTournaments.Count / 2; j++)
+                {
+                    TeamTournament homeTeam = tournament.TeamTournaments[j];
+
+                    TeamTournament awayTeam = tournament.TeamTournaments[tournament.TeamTournaments.Count - 1 - j];
+                    MatchVM matchVM = new MatchVM()
+                    {
+                        HomeTeam = homeTeam.Team,
+                        AwayTeam = awayTeam.Team,
+
+                    };
+                    matchesVM.Add(matchVM);
+                }
+               
+                TeamTournament lastTeam = tournament.TeamTournaments[tournament.TeamTournaments.Count - 1];
+
+                if (tournament.TeamTournaments.Count % 2 == 0)
+                {
+                    tournament.TeamTournaments.Remove(lastTeam);
+                    tournament.TeamTournaments.Insert(1, lastTeam);
+                }
+                else
+                {
+                    tournament.TeamTournaments.Remove(lastTeam);
+                    tournament.TeamTournaments.Insert(0, lastTeam);
+
+                }
+            }
+
+            return View(matchesVM);
         }
     }
 }

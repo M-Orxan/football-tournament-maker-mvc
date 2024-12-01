@@ -34,9 +34,9 @@ namespace football_tournament_maker_mvc.Repositories
             return await _context.Tournaments.Include(x=>x.TeamTournaments).ThenInclude(x=>x.Team).ToListAsync();
         }
 
-        public Task<Tournament> GetByIdAsync(int id)
+        public async Task<Tournament> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _context.Tournaments.Include(x => x.TeamTournaments).ThenInclude(x => x.Team).FirstOrDefaultAsync(x=>x.Id==id);
         }
     }
 }

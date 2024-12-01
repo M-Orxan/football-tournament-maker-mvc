@@ -1,7 +1,34 @@
-﻿
-@{
-    ViewData["Title"] = "GenerateMatches";
+﻿@{
+    ViewData["Title"] = "Generate Matches";
 }
 
-<h1>Matches</h1>
+@model List<MatchVM>
 
+<div class="text-center">
+    <h1>Tournament</h1>
+    <h2>Matches</h2>
+
+    <form asp-action="SubmitScores" method="post">
+        @{
+            int matchesPerRound = Model.Count / (int)ViewBag.RoundsCount;
+            int matchIndex = 0;
+
+            for (int round = 1; round <= (int)ViewBag.RoundsCount; round++)
+            {
+                <h4>Round @round:</h4>
+                for (int i = 0; i < matchesPerRound && matchIndex < Model.Count; i++, matchIndex++)
+                {
+                    var match = Model[matchIndex];
+                    <div class="mb-3">
+                        <label>@match.HomeTeam.Name vs @match.AwayTeam.Name</label>
+                        <input style="width:30px" />
+                        <input style="width:30px" />
+                        <button type="submit" class="btn btn-primary">Submit Score</button>
+                    </div>
+                }
+            }
+        }
+
+       
+    </form>
+</div>

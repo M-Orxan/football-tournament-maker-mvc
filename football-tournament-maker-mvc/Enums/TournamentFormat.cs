@@ -2,9 +2,10 @@
 {
     public enum TournamentFormat
     {
-        RoundRobin,
-        Knockout,
-        Hybrid
+        SingleRoundRobin,
+        //DoubleRoundRobin,
+        //Knockout,
+        //Hybrid
 
     }
 }
